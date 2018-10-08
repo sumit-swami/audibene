@@ -1,0 +1,80 @@
+<aura:component controller="AccountListCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="mydata" type="List"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="selectedRows" type="List"/>
+    <aura:attribute name="rowsSelected" type="List"/>
+    <aura:attribute name="accountsLength" type="String"/>
+    <aura:handler event="c:SearchKeyChange" action="{!c.searchKeyChange}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="objInfo" type="account" default="{sobjectType : 'Account'}" />
+ 	<aura:attribute name="success" type="boolean" default="false"/>
+   	<aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="message" type="String" default=""/>
+	<aura:attribute name="type" type="String" default=""/>
+    <ltng:require styles="/resource/slds_resource/styles/salesforce-lightning-design-system.css" />  
+     
+    <!-- Success/Error Message component div-->
+    <aura:if isTrue="{!v.message != ''}">
+    <div class="{!'slds-box slds-theme–alert-texture slds-theme_'+v.type}">
+	<lightning:icon iconName="{!'utility:'+v.type }" size="medium"
+                       alternativeText="{!v.type}" variant="inverse" class="inverse-icon"/>&nbsp;
+        <span class="slds-text-body–regular">
+            <aura:unescapedHtml value="{!v.message}"/>
+        </span>
+	</div>
+    </aura:if>    
+   <!-- Success/Error Message component div-->
+    
+	<!--spinner-->
+ <aura:if isTrue="{!v.Spinner}">
+    <div aura:id="spinnerId" class="slds-spinner_container">
+       <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+         <span class="slds-assistive-text">Loading</span>
+         <div class="slds-spinner__dot-a"></div>
+         <div class="slds-spinner__dot-b"></div>
+       </div>
+    </div>
+ </aura:if>
+  <!--spinner-->	
+    
+  <div class="slds">
+    <div class="slds-page-header noborderbottom" role="banner"> 
+      <div class="slds-grid">
+        <div class="slds-col slds-has-flexi-truncate">
+          <p class="slds-text-heading--label" style="padding-bottom: 4px;">Account Items</p>
+          <div class="slds-grid">
+            <div class="slds-grid slds-type-focus slds-no-space">
+              <h1 class="slds-page-header__title slds-truncate" title="My Items" style="font-family: 'Salesforce Sans',Arial,sans-serif; font-weight: 300; padding-bottom: 5px;">All Accounts</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-align-bottom">
+          <p class="slds-text-body--small page-header__info">{!v.accountsLength} items</p>
+            <div class="slds-grid">
+                
+        <!-- Search filter component-->        
+    <div class="slds-col slds-align-bottom" style="margin-top:10px">
+         <c:SearchBarCmp />
+    </div>        
+        <!-- Search filter component-->        
+</div>      
+        </div>
+      </div>
+    </div> 
+	<!-- Activate button-->      
+      <div class="slds-col slds-align-bottom" style="margin-top:10px">
+         <lightning:button label="Activate" variant="success" onclick="{!c.handleSelect}"/>
+    </div>
+    <!-- Activate button-->  
+  </div>    
+    <lightning:datatable aura:id="mytbl" data="{!v.mydata}" 
+                         columns="{!v.mycolumns}" 
+                         keyField="Id"
+                         selectedRows="{!v.selectedRows}" 
+                         onrowselection="{!c.updateSelectedRows}"
+                         />
+</aura:component>

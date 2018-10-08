@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="searchKey" type="String"/>
+    <aura:attribute name="searchIndKey" type="String"/>
+	<aura:attribute name="searchSrcKey" type="String"/>    
+</aura:event>

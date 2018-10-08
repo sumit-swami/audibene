@@ -1,0 +1,39 @@
+<aura:component controller="fetchPickListCtrl">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="objInfo" type="account" default="{sobjectType : 'Account'}" />
+    <aura:attribute name="filteredOption" type="boolean" default="false" />
+    <aura:attribute name="filterSetOption" type="boolean" default="false" />
+    <aura:attribute name="typeFilter" type="string" default=""/>
+    <aura:attribute name="industryFilter" type="string" default=""/>
+    <aura:attribute name="sourceFilter" type="string" default=""/>
+    <!-- Account type -->
+    <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Account Type</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="accType" class="slds-select"  change="{!c.onPicklistChange}"/>          
+      </div>       
+    </div>
+    <!-- Account type -->
+    
+    <!-- Condition to display Industry filter options -->
+    <aura:if isTrue="{!and(v.filteredOption, v.filterSetOption)}">       
+    <div class="slds-form-element ">
+      <label class="slds-form-element__label " for="select-01">Industry</label>
+    <div class="slds-select_container">
+         <ui:inputSelect  aura:id="accIndustry" class="slds-select"  change="{!c.onPicklistChange1}"/>          
+      </div> 
+    </div>
+    </aura:if>
+    <!-- Condition to display Industry filter options -->
+    <!-- Condition to display Source filter options -->
+    <aura:if isTrue="{!and(v.filteredOption, !v.filterSetOption)}">
+    <div class="slds-form-element ">
+      <label class="slds-form-element__label " for="select-01">Source</label>
+    <div class="slds-select_container">
+         <ui:inputSelect  aura:id="accSource" class="slds-select"  change="{!c.onPicklistChange2}"/>          
+      </div> 
+    </div>
+    </aura:if>
+    <!-- Condition to display Source filter options -->
+    <lightning:button variant="brand" label="Filter" onclick="{!c.onFilter}" />   
+</aura:component>
